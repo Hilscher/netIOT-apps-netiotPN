@@ -1,0 +1,71 @@
+<mvc:View
+  height="100%"
+  controllerName="netIOT.pnDevice.PortInfo.PortInfo"
+  xmlns:l="sap.ui.layout"
+  xmlns:mvc="sap.ui.core.mvc"
+  xmlns="sap.m">
+  <Page
+    title="{i18n>port}"
+    class="sapUiContentPadding page customPageTitle"
+    showNavButton="true"
+    navButtonPress="onNavBack"
+    navButtonTooltip="{i18n>goBack}">
+    <headerContent>
+      <Button icon="sap-icon://home" tooltip="{i18n>goHome}" press="goToHomePage"/>
+    </headerContent>    
+    <content> 
+    
+      <Toolbar  class="sapUiResponsiveMargin noBorderBottom">
+        <ToolbarSpacer/>
+        <Title text="{/portId}" class="titleText"/>
+        <ToolbarSpacer/>
+      </Toolbar>
+          
+      <Panel expandable="true" 
+             expanded="true"
+             class="sapUiResponsiveMargin sapUiNoMarginTop">
+        <headerToolbar>
+          <Toolbar>
+            <Title text="{i18n>general}" />
+          </Toolbar>
+        </headerToolbar>
+        <content>
+          <List items="{path: '/basicInfos'}" >
+            <DisplayListItem
+                label="{name}"
+                value="{value}"/>
+          </List>
+        </content>
+      </Panel>
+      
+      <Panel expandable="true" 
+         expanded="true"
+         class="sapUiResponsiveMargin sapUiNoMarginTop">
+        <headerToolbar>
+          <Toolbar height="3rem">
+            <Title text="{i18n>neighbourInfo}" />
+          </Toolbar>
+        </headerToolbar>
+        <content>
+          <List items="{path: '/neighbourInfoList'}"
+                noDataText="{i18n>noData}">
+          <DisplayListItem             
+              label="{name}"
+              value="{value}"
+              type="{listType}"/>
+          <!--press="goToNeighbour"-->
+          </List>
+        </content>
+      </Panel>      
+  
+    </content>
+    <footer >
+      <Toolbar class="footerToolbar">
+        <ToolbarSpacer/>
+        <Text text="{i18n>companyName}" />
+        <ToolbarSpacer/>
+      </Toolbar>
+    </footer>   
+    
+  </Page>
+</mvc:View>

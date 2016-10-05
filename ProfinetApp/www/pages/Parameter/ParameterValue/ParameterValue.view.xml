@@ -1,0 +1,66 @@
+<mvc:View
+  height="100%"
+  controllerName="netIOT.pnDevice.Parameter.ParameterValue.ParameterValue"
+  xmlns:l="sap.ui.layout"
+  xmlns:mvc="sap.ui.core.mvc"
+  xmlns="sap.m">
+  <Page
+    title="Parameter Value"
+    class="sapUiContentPadding page customPageTitle"
+    showNavButton="true"
+    navButtonPress="onNavBack"
+    navButtonTooltip="{i18n>goBack}">
+    <headerContent>
+      <Button icon="sap-icon://home" tooltip="{i18n>goHome}" press="goToHomePage"/>
+    </headerContent>    
+    <content>
+      <Toolbar  class="sapUiResponsiveMargin sapUiNoMarginBottom noBorderBottom">
+        <ToolbarSpacer/>
+        <Title text="{/parameterShortName}"/>
+        <ToolbarSpacer/>
+      </Toolbar>
+      
+      <!--
+      <l:VerticalLayout
+           class="sapUiContentPadding sapUiNoMarginTop"
+           width="100%">
+
+        <List items="{path: '/basicInfos'}">
+          <DisplayListItem
+              label="{name}"
+              value="{value}"
+              type="{listType}"/>
+        </List>     
+      </l:VerticalLayout>
+      -->
+       
+      <Panel expandable="true" 
+             expanded="true"
+             width="auto"            
+             class="sapUiResponsiveMargin sapUiNoMarginTop">
+        <headerToolbar>
+          <Toolbar>
+            <Title text="General" />           
+          </Toolbar>
+        </headerToolbar>
+        <content>
+        <List items="{path: '/basicInfos'}" >
+          <DisplayListItem
+              label="{name}"
+              value="{value}"
+              type="{listType}" />
+        </List>
+        </content>
+      </Panel>      
+      
+    </content>
+    <footer >
+      <Toolbar class="footerToolbar">
+        <ToolbarSpacer/>
+        <Text text="{i18n>companyName}" />
+        <ToolbarSpacer/>
+      </Toolbar>
+    </footer>   
+    
+  </Page>
+</mvc:View>

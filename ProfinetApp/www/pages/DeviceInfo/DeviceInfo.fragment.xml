@@ -1,0 +1,22 @@
+<core:FragmentDefinition
+  xmlns="sap.m"
+  xmlns:core="sap.ui.core"
+  xmlns:u="sap.ui.unified">
+    <u:Menu>
+      <u:MenuItem
+        text="{i18n>login}"
+        icon="sap-icon://person-placeholder"
+        select="goToLogin" />
+      <u:MenuItem
+        text="{i18n>deviceList}"
+        icon="sap-icon://list"
+        startsSection="false"
+        select="showDeviceList" />
+      <u:MenuItem
+        text="{i18n>about}"
+        icon="sap-icon://message-information"
+        startsSection="true"
+        select="goToAbout" />
+    </u:Menu>
+
+</core:FragmentDefinition>

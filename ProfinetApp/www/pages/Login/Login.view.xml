@@ -1,0 +1,98 @@
+<mvc:View
+  height="100%"
+  controllerName="netIOT.pnDevice.Login.Login"
+  xmlns:core="sap.ui.core"
+  xmlns:l="sap.ui.layout"
+  xmlns:f="sap.ui.layout.form"
+  xmlns:mvc="sap.ui.core.mvc"
+  xmlns="sap.m">
+  <Page
+    title="{i18n>login}"
+    class="sapUiContentPadding page customPageTitle"
+    showNavButton="true"
+    navButtonPress="onNavBack"
+    navButtonTooltip="{i18n>goBack}">
+    <headerContent>
+      <Button icon="sap-icon://home" tooltip="{i18n>goHome}" press="goToHomePage"/>
+    </headerContent>
+
+    <content>
+      <VBox class="sapUiSmallMarginTop">
+        <f:Form
+          editable="true">
+          <f:layout>
+            <f:ResponsiveGridLayout />
+          </f:layout>
+          <f:formContainers>
+            <f:FormContainer>
+              <f:formElements>
+                <f:FormElement label="{i18n>serverName}">
+                  <f:fields>
+                    <Toolbar class="noBorderBottom">
+                      <Text text="{/selectedServerName}"/>
+                      <core:Icon
+                         color="Positive"
+                         src="sap-icon://accept" 
+                         visible="{/isLogged}">
+                      </core:Icon>
+                      <ToolbarSpacer/>
+                      <Button id="loginButton"
+                              class="loginButton"
+                              text="{/loginButtonText}"
+                              press="onLoginButton">
+                      </Button>
+                    </Toolbar>
+                  </f:fields>
+                </f:FormElement>
+              </f:formElements>
+            </f:FormContainer>
+          </f:formContainers>
+        </f:Form>
+      </VBox>
+
+      <Panel expandable="false"
+             expanded="true"
+             width="auto"
+             class="sapUiResponsiveMargin sapUiNoMarginTop sapUiNoMarginBottom">
+        <headerToolbar>
+          <Toolbar>
+            <Title text="{i18n>serverList}" />
+            <ToolbarSpacer/>
+            <Button id="deleteButton" 
+                    icon="sap-icon://delete" 
+                    tooltip="{i18n>deleteServer}"
+                    press="onDeleteButton"
+                    enabled="false"/>
+            <Button icon="sap-icon://add-contact"
+                    tooltip="{i18n>addServer}"
+                    press="addServer"/>
+          </Toolbar>
+        </headerToolbar>
+        <content>
+          <List id="serverList" 
+                mode="MultiSelect"
+                class="customList"
+                items="{path: '/serverList'}"
+                noDataText="{i18n>noServer}"
+                selectionChange="onSelectionChange" >
+            <DisplayListItem
+              detailPress="goToServerInfo"
+              press="selectServer"
+              label="{name}"
+              value="{url}"
+              type="DetailAndActive"/>
+          </List>
+        </content>
+      </Panel>
+
+    </content>
+    <footer >
+      <Toolbar class="footerToolbar">
+        <ToolbarSpacer/>
+        <Text text="{i18n>companyName}" />
+        <ToolbarSpacer/>
+      </Toolbar>
+    </footer>
+
+  </Page>
+</mvc:View>
