@@ -1,0 +1,62 @@
+<core:FragmentDefinition
+  xmlns="sap.m"
+  xmlns:core="sap.ui.core">
+  <Panel expandable="true"
+         expanded="true"
+         width="100%"
+         class="sapUiNoMargin">
+    <headerToolbar>
+      <Toolbar height="3rem">
+        <Title text="{/panelName}" />
+        <ToolbarSpacer/>
+        <Title text="{/panelType}" />
+      </Toolbar>
+    </headerToolbar>
+    <content>
+      <List items="{path: '/basicInfos'}"
+            noDataText="{i18n>noData}">
+        <DisplayListItem
+            label="{name}"
+            value="{value}"/>
+      </List>
+      <Table
+        growing="true"
+        growingScrollToLoad="true"
+        noDataText="{i18n>noData}"
+        width="auto"
+        items="{
+                path: '/portList'
+              }">
+        <columns>
+          <Column hAlign="Center" width="10%">
+            <Text text="{i18n>portStatus}"/>
+          </Column>
+          <Column hAlign="Center" >
+            <Text text="{i18n>portNumber}"/>
+          </Column>
+          <Column hAlign="Left">
+            <Text text="{i18n>vendorId}"/>
+          </Column>
+          <Column hAlign="Left">
+            <Text text="{i18n>deviceId}"/>
+          </Column>
+        </columns>
+        <items>
+          <ColumnListItem
+            press="onPressIoLinkPort"
+            type="Navigation">
+            <cells>
+              <core:Icon
+                color="{iconColor}"
+                src="{iconSrc}" />
+              <ObjectIdentifier
+                title="{portNumber}"/>
+              <Text text="{iolVendorId}"/>
+              <Text text="{iolDeviceId}"/>
+            </cells>
+          </ColumnListItem>
+        </items>
+      </Table>
+    </content>
+  </Panel>
+</core:FragmentDefinition>

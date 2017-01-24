@@ -13,7 +13,7 @@
     navButtonPress="onNavBack"
     navButtonTooltip="{i18n>goBack}">
     <headerContent>
-      <Button icon="sap-icon://database" tooltip="" press="goToCallerApp"/>
+      <!--<Button icon="sap-icon://database" tooltip="" press="goToCallerApp"/>-->
       <!--<Button icon="sap-icon://home" tooltip="{i18n>goHome}" press="goToHomePage"/>-->
       <Button icon="sap-icon://menu2" tooltip="{i18n>menu}" press="openMenu"/>
     </headerContent>

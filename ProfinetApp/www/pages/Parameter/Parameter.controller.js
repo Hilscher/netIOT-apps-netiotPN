@@ -72,12 +72,12 @@ sap.ui.define(['jquery.sap.global',
          *       
          * @public
          */   
-        queryParameter: function (packageId, deviceUuid, semanticInfo) {
+        queryParameter: function (packageId, uuid, semanticInfo) {
           var that = this;
           var sessionToken = oAppDataModel.getSessionToken();
           var url = oAppDataModel.getRequestUrl("/device/parameter")
                     + '?packageId=' + encodeURIComponent(packageId)
-                    + '&deviceUuid=' + encodeURIComponent(deviceUuid)
+                    + '&uuid=' + encodeURIComponent(uuid)
                     + '&semanticInfo=' + encodeURIComponent(JSON.stringify(semanticInfo));
 
           jQuery.ajax({
@@ -96,15 +96,17 @@ sap.ui.define(['jquery.sap.global',
               }
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
-              var msg = oBundle.getText('failedToGetParameter');
+              
+              var msg = oBundle.getText('noAccessRight');
+              //var msg = oBundle.getText('failedToGetParameter');
 
-              if (XMLHttpRequest && XMLHttpRequest.responseJSON) {
-                var res = XMLHttpRequest.responseJSON;
+              //if (XMLHttpRequest && XMLHttpRequest.responseJSON) {
+              //  var res = XMLHttpRequest.responseJSON;
 
-                if (res.message) {
-                  msg = msg + " " + res.message;
-                }
-              }
+              //  if (res.message) {
+              //    msg = msg + " " + res.message;
+              //  }
+              //}
 
               sap.m.MessageToast.show(msg, MessageToastOption);
             }
@@ -151,8 +153,8 @@ sap.ui.define(['jquery.sap.global',
          */
         updateView: function (params) {
 
-          if (params && params.deviceUuid && params.packageId && params.parameter) {
-            this.queryParameter(params.packageId, params.deviceUuid, params.parameter.semanticInfo);
+          if (params && params.uuid && params.packageId && params.parameter) {
+            this.queryParameter(params.packageId, params.uuid, params.parameter.semanticInfo);
           }
 
           //if (parameter) {
@@ -321,7 +323,8 @@ sap.ui.define(['jquery.sap.global',
           
           if(dataModel && parameter) {
             var basicInfos = [];
-            var temp = "";            
+            var temp = "";
+            var inactiveListType = "Inactive";
             
             // Name 
             if (jQuery.isArray(parameter.name)) {
@@ -331,7 +334,7 @@ sap.ui.define(['jquery.sap.global',
             basicInfos.push({
               name : oBundle.getText('name'),
               value : temp,
-              listType : "Inactive"
+              listType: inactiveListType
             });
 
             // SemanticInfo
@@ -342,7 +345,7 @@ sap.ui.define(['jquery.sap.global',
               basicInfos.push({
                 name : oBundle.getText('semanticInfo'),
                 value : temp,
-                listType : "Inactive"
+                listType : inactiveListType
               });
             } 
             */
@@ -353,28 +356,46 @@ sap.ui.define(['jquery.sap.global',
               basicInfos.push({
                 name: oBundle.getText("description"),
                 value: parameter.description,
-                listType: "Inactive"
+                listType: inactiveListType
               });
             }
 
-            // DataType
-            var dataType = "";
-            if(parameter.hasOwnProperty("dataType")) {
-              dataType = parameter.dataType;
-            }           
+            // opcDataType
+            var opcDataType = "";
+            if (parameter.hasOwnProperty("opcDataType")) {
+              opcDataType = parameter.opcDataType;
+            }
 
             basicInfos.push({
-              name: oBundle.getText("dataType"),
-              value: dataType,
-              listType: "Inactive"
+              name: oBundle.getText("opcDataType"),
+              value: opcDataType,
+              listType: inactiveListType
             });
 
+            // pnDataType
+            if (parameter.hasOwnProperty("pnDataType")) {
+              basicInfos.push({
+                name: oBundle.getText("pnDataType"),
+                value: parameter.pnDataType,
+                listType: inactiveListType
+              });
+            }
+
+            // iolDataType
+            if (parameter.hasOwnProperty("iolDataType")) {
+              basicInfos.push({
+                name: oBundle.getText("iolDataType"),
+                value: parameter.iolDataType,
+                listType: inactiveListType
+              });
+            }
+            
             // ByteOffset
             if (parameter.hasOwnProperty("byteOffset")) {
               basicInfos.push({
                 name: oBundle.getText("byteOffset"),
                 value: parameter.byteOffset,
-                listType: "Inactive"
+                listType: inactiveListType
               });
             }
 
@@ -383,7 +404,7 @@ sap.ui.define(['jquery.sap.global',
               basicInfos.push({
                 name: oBundle.getText("bitOffset"),
                 value: parameter.bitOffset,
-                listType: "Inactive"
+                listType: inactiveListType
               });
             }
 
@@ -392,15 +413,15 @@ sap.ui.define(['jquery.sap.global',
               basicInfos.push({
                 name: oBundle.getText("bitLength"),
                 value: parameter.bitLength,
-                listType: "Inactive"
+                listType: inactiveListType
               });
             }
 
             // ValueEnums
             var valueEnums = undefined;
             if(parameter.hasOwnProperty("valueEnums")) {
-              valueEnums = parameter.valueEnums;              
-            }             
+              valueEnums = parameter.valueEnums;
+            }
             
             // Value
             var listType = "Inactive";
@@ -412,7 +433,7 @@ sap.ui.define(['jquery.sap.global',
               //temp = result.text;
               
               //if(result.isComplicateValue) {
-              //  listType = "Inactive"; //Navigation
+              //  listType = inactiveListType; //Navigation
               //}
             }
             else {
@@ -441,7 +462,7 @@ sap.ui.define(['jquery.sap.global',
               basicInfos.push({
                 name: oBundle.getText("defaultValue"),
                 value: parameter.defaultValue,
-                listType: "Inactive"
+                listType: inactiveListType
               });
             }
 
@@ -450,7 +471,7 @@ sap.ui.define(['jquery.sap.global',
               basicInfos.push({
                 name: oBundle.getText("allowedValues"),
                 value: parameter.allowedValues,
-                listType: "Inactive"
+                listType: inactiveListType
               });
             }
 
@@ -461,7 +482,7 @@ sap.ui.define(['jquery.sap.global',
               basicInfos.push({
                 name: oBundle.getText("minValue"),
                 value: parameter.minValue,
-                listType: "Inactive"
+                listType: inactiveListType
               });
             }            
 
@@ -472,18 +493,18 @@ sap.ui.define(['jquery.sap.global',
               basicInfos.push({
                 name: oBundle.getText("maxValue"),
                 value: parameter.maxValue,
-                listType: "Inactive"
+                listType: inactiveListType
               });
             }
             
             // Unit
-            if(parameter.hasOwnProperty("unit")) {            
+            if(parameter.hasOwnProperty("unit")) {
               basicInfos.push({
                 name: oBundle.getText("unit"),
                 value: parameter.unit,
-                listType: "Inactive"
+                listType: inactiveListType
               });
-            }            
+            }
 
             // AccessRight
             if(parameter.hasOwnProperty("accessRight")) {
@@ -492,10 +513,10 @@ sap.ui.define(['jquery.sap.global',
               basicInfos.push({
                 name: oBundle.getText("accessRight"),
                 value: temp,
-                listType: "Inactive"
+                listType: inactiveListType
               }); 
-            }            
-              
+            }
+
             dataModel.setProperty("/parameterShortName", this.getShortName(parameter.name));  
             dataModel.setProperty("/basicInfos", basicInfos);
           }
@@ -510,14 +531,14 @@ sap.ui.define(['jquery.sap.global',
          * @public
          */
         updateSubParameterList : function(dataModel, parameter) {
-          
+
           if(dataModel && parameter) {
-            
+
             var subParameterList = []; 
-            
+
             if(parameter.hasOwnProperty("subParameterList") &&
                jQuery.isArray(parameter.subParameterList)) {
-              
+
               var subParam, shortName, subParamValue, subParamUnit;
               var convertResult;
               

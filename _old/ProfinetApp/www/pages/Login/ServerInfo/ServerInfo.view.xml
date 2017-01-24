@@ -1,0 +1,99 @@
+<mvc:View
+  height="100%"
+  controllerName="netIOT.pnDevice.Login.ServerInfo.ServerInfo"
+  xmlns:core="sap.ui.core"
+  xmlns:l="sap.ui.layout"
+  xmlns:f="sap.ui.layout.form"
+  xmlns:mvc="sap.ui.core.mvc"
+  xmlns="sap.m">
+  <Page
+    title="{i18n>serverInfo}"
+    class="sapUiContentPadding page customPageTitle"
+    showNavButton="true"
+    navButtonPress="onNavBack"
+    navButtonTooltip="{i18n>goBack}">
+    <headerContent>
+      <Button icon="sap-icon://home" tooltip="{i18n>goHome}" press="goToHomePage"/>
+    </headerContent>    
+    <content>
+      <VBox class="sapUiMediumMarginTop">
+        <f:Form
+          class="customForm"
+          editable="true">
+          <f:layout>
+            <f:ResponsiveGridLayout />
+          </f:layout>
+          <f:formContainers>
+            <f:FormContainer>
+              <f:formElements>
+                <f:FormElement label="{i18n>serverName}">
+                  <f:fields>
+                    <Input id="serverName"
+                           value="{/serverName}"
+                           valueLiveUpdate="true"
+                           liveChange="onServerNameChanged"/>
+                  </f:fields>
+                </f:FormElement>
+                <f:FormElement label="{i18n>serverUrl}">
+                  <f:fields>
+                    <Input id="serverUrl"
+                           type="Url"
+                           value="{/serverUrl}"
+                           valueLiveUpdate="true"
+                           liveChange="onServerUrlChanged"/>
+                  </f:fields>
+                </f:FormElement>
+                <f:FormElement label="{i18n>userName}">
+                  <f:fields>
+                    <Input id="userName" 
+                           value="{/userName}"
+                           valueLiveUpdate="true"
+                           liveChange="onUserNameChanged"/>
+                  </f:fields>
+                </f:FormElement>
+                <f:FormElement label="{i18n>password}">
+                  <f:fields>
+                    <Toolbar class="noBorderBottom">
+                      <Input value="{/password}" 
+                             type="{/passwordInputType}" 
+                             class="noMarginLeft"
+                             valueLiveUpdate="true"
+                             liveChange="onPasswordChanged"/>
+                      <Button icon="{/passwordIconSrc}"
+                              class="noMarginRight"
+                              press="togglePasswordInputType"
+                              enabled="{/canPasswordBeShown}"/>
+                    </Toolbar>
+                  </f:fields>
+                </f:FormElement>
+                <f:FormElement label="">
+                  <f:fields>
+                    <Toolbar class="sapUiMediumMarginTop noBorderBottom">
+                      <ToolbarSpacer/>
+                      <Button text="{/saveButtonText}"
+                              enabled="{/isSaveButtonEnabled}"
+                              press="onSave"
+                              class="sapUiSmallMarginEnd okCancelButtons"/>
+                      <Button text="{i18n>cancel}"
+                              press="onNavBack"
+                              class="okCancelButtons noMarginRight"/>
+                    </Toolbar>
+                  </f:fields>
+                </f:FormElement>
+              </f:formElements>
+            </f:FormContainer>
+          </f:formContainers>
+        </f:Form>
+      </VBox>
+      
+    </content>
+    <footer >
+      <Toolbar class="footerToolbar">
+        <ToolbarSpacer/>
+        <Text text="{i18n>companyName}" />
+        <ToolbarSpacer/>
+      </Toolbar>
+    </footer>   
+    
+  </Page>
+</mvc:View>

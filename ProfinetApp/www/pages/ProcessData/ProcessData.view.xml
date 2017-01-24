@@ -45,7 +45,8 @@
           </Toolbar>
         </headerToolbar>
         <content>
-          <List items="{path: '/basicInfos'}" >
+          <List items="{path: '/basicInfos'}"
+                noDataText="{i18n>noData}">
             <DisplayListItem
               press="goToDetails"
               label="{name}"

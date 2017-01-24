@@ -198,12 +198,11 @@ sap.ui.define([
       }
 
       if(snmpGlobal) {
-        
         // DeviceName
-        if (snmpGlobal.hasOwnProperty("snmpDeviceName")) {
+        if (snmpGlobal.hasOwnProperty("deviceName")) {
           neighbourInfoList.push({
             name: oBundle.getText("deviceName"),
-            value: snmpGlobal.snmpDeviceName,
+            value: snmpGlobal.deviceName,
             listType: inactiveLinkType,
             linkType: "device"
           });
@@ -222,11 +221,11 @@ sap.ui.define([
           });
         }
 
-        // StationName
-        //if (deviceIF.snmpInterface && deviceIF.snmpInterface.snmpStationName) {
+        // nameOfStation
+        //if (deviceIF.snmpInterface && deviceIF.snmpInterface.nameOfStation) {
         //  neighbourInfoList.push({
-        //    name: oBundle.getText("stationName"),
-        //    value: deviceIF.snmpInterface.snmpStationName,
+        //    name: oBundle.getText("nameOfStation"),
+        //    value: deviceIF.snmpInterface.nameOfStation,
         //    listType: inactiveLinkType
         //  });
         //}
@@ -238,38 +237,38 @@ sap.ui.define([
         var snmpPort = port.snmpPort;
 
         if (snmpPort) {
-          // Port index
-          if (snmpPort.hasOwnProperty("snmpPortNumber")) {
+          // Port number
+          if (snmpPort.hasOwnProperty("portNumber")) {
             neighbourInfoList.push({
               name: oBundle.getText("portNumber"),
-              value: snmpPort.snmpPortNumber,
+              value: snmpPort.portNumber,
               listType: inactiveLinkType
             });
           }
 
-          // PortId
-          if (snmpPort.hasOwnProperty("snmpPortId")) {
+          // portName
+          if (snmpPort.hasOwnProperty("portName")) {
             // TODO: Allow navigation to neighbour port. 
             //var listType = neighbourPortUuid ? "Navigation" : inactiveLinkType
             var listType = inactiveLinkType;
 
             neighbourInfoList.push({
-              name: oBundle.getText("portId"),
-              value: snmpPort.snmpPortId,
+              name: oBundle.getText("portName"),
+              value: snmpPort.portName,
               listType: listType,
               linkType: "port"
             });
           }
 
           // Port description
-          if (snmpPort.hasOwnProperty("snmpPortDescription")) {
+          if (snmpPort.hasOwnProperty("description")) {
             // TODO: Allow navigation to neighbour port. 
             //var listType = neighbourPortUuid ? "Navigation" : inactiveLinkType
             var listType = inactiveLinkType;
 
             neighbourInfoList.push({
-              name: oBundle.getText("portDescription"),
-              value: snmpPort.snmpPortDescription,
+              name: oBundle.getText("description"),
+              value: snmpPort.description,
               listType: listType,
               linkType: "port"
             });
@@ -301,104 +300,104 @@ sap.ui.define([
 
       if (snmpPort) {
         // PortNumber
-        if (snmpPort.hasOwnProperty("snmpPortNumber")) {
+        if (snmpPort.hasOwnProperty("portNumber")) {
           basicInfos.push({
             name: oBundle.getText("portNumber"),
-            value: snmpPort.snmpPortNumber,
+            value: snmpPort.portNumber,
             listType: inactiveLinkType
           });
         }
 
         // PortId
-        if (snmpPort.hasOwnProperty("snmpPortId")) {
-          portId = snmpPort.snmpPortId;
+        if (snmpPort.hasOwnProperty("portName")) {
+          portId = snmpPort.portId;
 
           basicInfos.push({
-            name: oBundle.getText("portId"),
-            value: snmpPort.snmpPortId,
+            name: oBundle.getText("portName"),
+            value: snmpPort.portName,
             listType: inactiveLinkType
           });
         }
 
         // LinkStatus
-        if (snmpPort.hasOwnProperty("snmpLinkStatus")) {
+        if (snmpPort.hasOwnProperty("linkStatus")) {
           basicInfos.push({
             name: oBundle.getText("linkStatus"),
-            value: snmpPort.snmpLinkStatus,
+            value: snmpPort.linkStatus,
             listType: inactiveLinkType
           });
         }
 
         // PortDescription
-        if (snmpPort.hasOwnProperty("snmpPortDescription")) {
+        if (snmpPort.hasOwnProperty("description")) {
           basicInfos.push({
             name: oBundle.getText("description"),
-            value: snmpPort.snmpPortDescription,
+            value: snmpPort.description,
             listType: inactiveLinkType
           });
         }
 
         // InOctets
-        if (snmpPort.hasOwnProperty("snmpInOctets")) {
+        if (snmpPort.hasOwnProperty("inOctets")) {
           basicInfos.push({
             name: oBundle.getText("inOctets"),
-            value: snmpPort.snmpInOctets,
+            value: snmpPort.inOctets,
             listType: inactiveLinkType
           });
         }
 
         // OutOctets
-        if (snmpPort.hasOwnProperty("snmpOutOctets")) {
+        if (snmpPort.hasOwnProperty("outOctets")) {
           basicInfos.push({
             name: oBundle.getText("outOctets"),
-            value: snmpPort.snmpOutOctets,
+            value: snmpPort.outOctets,
             listType: inactiveLinkType
           });
         }
 
         // inErrorFrames
-        if (snmpPort.hasOwnProperty("snmpInErrorFrames")) {
+        if (snmpPort.hasOwnProperty("inErrorFrames")) {
           basicInfos.push({
             name: oBundle.getText("inErrorFrames"),
-            value: snmpPort.snmpInErrorFrames,
+            value: snmpPort.inErrorFrames,
             listType: inactiveLinkType
           });
         }
 
         // OutErrorFrames
-        if (snmpPort.hasOwnProperty("snmpOutErrorFrames")) {
+        if (snmpPort.hasOwnProperty("outErrorFrames")) {
           basicInfos.push({
             name: oBundle.getText("outErrorFrames"),
-            value: snmpPort.snmpOutErrorFrames,
+            value: snmpPort.outErrorFrames,
             listType: inactiveLinkType
           });
         }
 
         // snmpInDiscardFrames
-        if (snmpPort.hasOwnProperty("snmpInDiscardFrames")) {
+        if (snmpPort.hasOwnProperty("inDiscardFrames")) {
           basicInfos.push({
             name: oBundle.getText("inDiscardFrames"),
-            value: snmpPort.snmpInDiscardFrames,
+            value: snmpPort.inDiscardFrames,
             listType: inactiveLinkType
           });
         }
 
         // snmpOutDiscardFrames
-        if (snmpPort.hasOwnProperty("snmpOutDiscardFrames")) {
+        if (snmpPort.hasOwnProperty("outDiscardFrames")) {
           basicInfos.push({
             name: oBundle.getText("outDiscardFrames"),
-            value: snmpPort.snmpOutDiscardFrames,
+            value: snmpPort.outDiscardFrames,
             listType: inactiveLinkType
           });
         }
 
         // snmpSpeedInBitsPerSec
-        if (snmpPort.hasOwnProperty("snmpSpeedInBitsPerSec")) {
+        if (snmpPort.hasOwnProperty("speedInBitsPerSec")) {
           var speedWithUnit = '';
-          var speed = parseFloat(snmpPort.snmpSpeedInBitsPerSec);
+          var speed = parseFloat(snmpPort.speedInBitsPerSec);
 
           if (isNaN(speed)) {
-            speedWithUnit = snmpPort.snmpSpeedInBitsPerSec;
+            speedWithUnit = snmpPort.speedInBitsPerSec;
           } else {
             var numberOfDecimals = 1;
 
@@ -434,74 +433,74 @@ sap.ui.define([
       var iolPort = port.iolPort;
 
       if (iolPort) {
-        // iolVendorId
-        if (iolPort.hasOwnProperty("iolVendorId")) {
+        // vendorId
+        if (iolPort.hasOwnProperty("vendorId")) {
           basicInfos.push({
             name: oBundle.getText("vendorId"),
-            value: iolPort.iolVendorId,
+            value: iolPort.vendorId,
             listType: inactiveLinkType
           });
         }
 
-        // iolDeviceId
-        if (iolPort.hasOwnProperty("iolDeviceId")) {
+        // deviceId
+        if (iolPort.hasOwnProperty("deviceId")) {
           basicInfos.push({
             name: oBundle.getText("deviceId"),
-            value: iolPort.iolDeviceId,
+            value: iolPort.deviceId,
             listType: inactiveLinkType
           });
         }
 
-        // iolSerialNumber
-        if (iolPort.hasOwnProperty("iolSerialNumber")) {
+        // serialNumber
+        if (iolPort.hasOwnProperty("serialNumber")) {
           basicInfos.push({
             name: oBundle.getText("serialNumber"),
-            value: iolPort.iolSerialNumber,
+            value: iolPort.serialNumber,
             listType: inactiveLinkType
           });
         }
 
-        // iolDsConfig
-        if (iolPort.hasOwnProperty("iolDsConfig")) {
+        // portNumber
+        if (iolPort.hasOwnProperty("portNumber")) {
           basicInfos.push({
-            name: oBundle.getText("dsConfig"),
-            value: iolPort.iolDsConfig,
+            name: oBundle.getText("portNumber"),
+            value: iolPort.portNumber,
             listType: inactiveLinkType
           });
         }
 
-        // iolInspectorLevel
-        if (iolPort.hasOwnProperty("iolInspectorLevel")) {
+        // portMode
+        if (iolPort.hasOwnProperty("portMode")) {
           basicInfos.push({
-            name: oBundle.getText("inspectorLevel"),
-            value: iolPort.iolInspectorLevel,
+            name: oBundle.getText("portMode"),
+            value: iolPort.portMode,
             listType: inactiveLinkType
           });
         }
 
-        // iolPort
-        if (iolPort.hasOwnProperty("iolPort")) {
+        // inspectionLevel
+        if (iolPort.hasOwnProperty("inspectionLevel")) {
           basicInfos.push({
-            name: oBundle.getText("iolPort"),
-            value: iolPort.iolPort,
+            name: oBundle.getText("inspectionLevel"),
+            value: iolPort.inspectionLevel,
             listType: inactiveLinkType
           });
         }
 
-        // iolPortMode
-        if (iolPort.hasOwnProperty("iolPortMode")) {
+        // comMode
+        if (iolPort.hasOwnProperty("comMode")) {
           basicInfos.push({
-            name: oBundle.getText("iolPortMode"),
-            value: iolPort.iolPortMode,
+            name: oBundle.getText("comMode"),
+            value: iolPort.comMode,
             listType: inactiveLinkType
           });
         }
 
-        // iolPortModeDetails
-        if (iolPort.hasOwnProperty("iolPortModeDetails")) {
+        // sensorConnected
+        if (iolPort.hasOwnProperty("sensorConnected")) {
           basicInfos.push({
-            name: oBundle.getText("portModeDetails"),
-            value: iolPort.iolPortModeDetails,
+            name: oBundle.getText("sensorConnected"),
+            value: iolPort.sensorConnected.toString(),
             listType: inactiveLinkType
           });
         }

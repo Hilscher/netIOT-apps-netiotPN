@@ -1,11 +1,23 @@
 {
-     "android": {
-         "release": {
-             "keystore": "",
-             "storePassword": "",
-             "alias": "",
-             "password" : "",
-             "keystoreType": ""
-         }
-     }
- }
+  "android": {
+    "release": {
+      "keystore": "",
+      "storePassword": "",
+      "alias": "",
+      "password": "",
+      "keystoreType": ""
+    }
+  },
+  "ios": {
+    "debug": {
+      "developmentTeam": "Y72QZS5673",
+      "codeSignIdentity": "iPhone Developer",
+	  "packageType": "development"
+    },
+    "release": {
+      "developmentTeam": "Y72QZS5673",
+      "codeSignIdentity": "iPhone Developer",
+	  "packageType": "app-store"
+    }
+  }
+}

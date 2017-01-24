@@ -1,0 +1,77 @@
+<core:FragmentDefinition
+  xmlns="sap.m"
+  xmlns:core="sap.ui.core">
+  <Panel expandable="true"
+         expanded="true"
+         width="auto"
+         class="sapUiNoMargin">
+    <headerToolbar>
+      <Toolbar height="3rem">
+        <Title text="{/panelName}" />
+        <ToolbarSpacer/>
+        <Title text="{/panelType}" />
+      </Toolbar>
+    </headerToolbar>
+    <content>
+      <List items="{path: '/basicInfos'}"
+            noDataText="{i18n>noData}">
+        <DisplayListItem
+            label="{name}"
+            value="{value}"/>
+      </List>
+      <Table
+        growing="true"
+        growingScrollToLoad="true"
+        noDataText="{i18n>noData}"
+        width="auto"
+        items="{
+          path: '/portList',
+          sorter: {
+            path: 'portNumber',
+            descending: false
+          }
+        }">
+        
+        <columns>
+          <Column hAlign="Center" width="10%">
+            <Text text="{i18n>portStatus}"/>
+          </Column>     
+          <Column hAlign="Center" >
+            <Text text="{i18n>portNumber}"/>
+          </Column>
+          <Column hAlign="Left">
+            <Text text="{i18n>inOctets}"/>
+          </Column>
+          <Column hAlign="Left">
+            <Text text="{i18n>outOctets}"/>
+          </Column>
+          <Column hAlign="Left">
+            <Text text="{i18n>inErrorFrames}"/>
+          </Column>
+          <Column hAlign="Left">
+            <Text text="{i18n>outErrorFrames}"/>
+          </Column>
+        </columns>
+        <items>
+          <ColumnListItem
+            press="onPressProfinetPort"
+            type="{columnType}">
+            <cells>
+              <core:Icon
+                color="{iconColor}"
+                src="{iconSrc}" />
+              <ObjectIdentifier
+                title="{portNumber}"/>
+              <Text text="{inOctets}"/>
+              <Text text="{outOctets}"/>
+              <Text text="{inErrorFrames}"/>
+              <Text text="{outErrorFrames}"/>
+            </cells>
+          </ColumnListItem>
+        </items>
+      </Table>
+
+    </content>
+  </Panel>
+
+</core:FragmentDefinition>

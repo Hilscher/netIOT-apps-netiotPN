@@ -72,12 +72,12 @@ sap.ui.define(['jquery.sap.global',
          *
          * @public
          */
-        queryProcessData: function (packageId, deviceUuid, semanticInfo) {
+        queryProcessData: function (packageId, ifUuid, semanticInfo) {
           var that = this;
           var sessionToken = oAppDataModel.getSessionToken();
           var url = oAppDataModel.getRequestUrl("/device/processData")
                     + '?packageId=' + encodeURIComponent(packageId)
-                    + '&deviceUuid=' + encodeURIComponent(deviceUuid)
+                    + '&uuid=' + encodeURIComponent(ifUuid)
                     + '&semanticInfo=' + encodeURIComponent(JSON.stringify(semanticInfo));
 
           jQuery.ajax({
@@ -95,16 +95,16 @@ sap.ui.define(['jquery.sap.global',
               }
             },
             error : function(XMLHttpRequest, textStatus, errorThrown) {
-              var msg = oBundle.getText('failedToGetProcessData');
+              //var msg = oBundle.getText('failedToGetProcessData');
 
-              if (XMLHttpRequest && XMLHttpRequest.responseJSON) {
-                var res = XMLHttpRequest.responseJSON;
+              //if (XMLHttpRequest && XMLHttpRequest.responseJSON) {
+              //  var res = XMLHttpRequest.responseJSON;
 
-                if (res.message) {
-                  msg = msg + " " + res.message;
-                }
-              }
-
+              //  if (res.message) {
+              //    msg = msg + " " + res.message;
+              //  }
+              //}
+              var msg = oBundle.getText('noAccessRight');
               sap.m.MessageToast.show(msg, MessageToastOption);
             }
           });
@@ -151,11 +151,11 @@ sap.ui.define(['jquery.sap.global',
          */
         updateView: function (params) {
 
-          if (params && params.packageId && params.deviceUuid && params.processData) {
+          if (params && params.packageId && params.ifUuid && params.processData) {
             var semanticInfo = params.processData.semanticInfo;
 
             if (semanticInfo) {
-              this.queryProcessData(params.packageId, params.deviceUuid, semanticInfo);
+              this.queryProcessData(params.packageId, params.ifUuid, semanticInfo);
             }
           }
 
@@ -296,6 +296,8 @@ sap.ui.define(['jquery.sap.global',
          */
         updateViewModel: function (processData) {
 
+          //console.log(JSON.stringify(processData));
+
           var dataModel = this.getView().getModel();
 
           if (processData && dataModel) {
@@ -368,17 +370,35 @@ sap.ui.define(['jquery.sap.global',
               listType: "Inactive"
             });
 
-            // DataType
-            var dataType = "";
-            if(processData.hasOwnProperty("dataType")) {
-              dataType = processData.dataType;
+            // opcDataType
+            var opcDataType = "";
+            if (processData.hasOwnProperty("opcDataType")) {
+              opcDataType = processData.opcDataType;
             }           
 
             basicInfos.push({
-              name: oBundle.getText("dataType"),
-              value: dataType,
+              name: oBundle.getText("opcDataType"),
+              value: opcDataType,
               listType: "Inactive"
             });
+
+            // pnDataType
+            if (processData.hasOwnProperty("pnDataType")) {
+              basicInfos.push({
+                name: oBundle.getText("pnDataType"),
+                value: processData.pnDataType,
+                listType: "Inactive"
+              });
+            }
+
+            // iolDataType
+            if (processData.hasOwnProperty("iolDataType")) {
+              basicInfos.push({
+                name: oBundle.getText("iolDataType"),
+                value: processData.iolDataType,
+                listType: "Inactive"
+              });
+            }
 
             // ByteOffset
             if (processData.hasOwnProperty("byteOffset")) {

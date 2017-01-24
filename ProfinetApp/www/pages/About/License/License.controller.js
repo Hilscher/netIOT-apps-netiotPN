@@ -48,7 +48,7 @@ sap.ui.define([
     initViewModel: function () {
 
       var licenseText = '';
-      var response = jQuery.sap.syncGetText("MitLicense.txt");
+      var response = jQuery.sap.syncGetText("MITLicense.txt");
 
       if (response && response.data) {
         licenseText = response.data;

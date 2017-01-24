@@ -1,0 +1,29 @@
+﻿{
+  "licenseList": [
+    {
+      "name": "Cordova Certificate Plugin",
+      "version": "0.6.4",
+      "license": "MIT"
+    },
+    {
+      "name": "Custom URL scheme (Cordova Plugin)",
+      "version": "4.1.5",
+      "license": "MIT"
+    },
+    {
+      "name": "Cordova InAppBrowser Plugin",
+      "version": "1.4.0",
+      "license": "Apache 2.0"
+    },
+    {
+      "name": "Cordova Network Whitelist Plugin",
+      "version": "1.2.2",
+      "license": "Apache 2.0"
+    },
+    {
+      "name": "OpenUI5",
+      "version": "1.36.10",
+      "license": "Apache 2.0"
+    }
+  ]
+}

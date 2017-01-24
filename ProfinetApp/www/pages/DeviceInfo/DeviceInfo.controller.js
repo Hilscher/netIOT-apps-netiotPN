@@ -155,7 +155,8 @@ sap.ui.define([
 
       if (deviceUuid) {
         var OnSuccess = function (data) {
-          
+          sap.ui.core.BusyIndicator.hide();
+
           oAppDataModel.setDeviceListResponse(data);
           var result = that.setDeviceInfo(deviceUuid);
 
@@ -188,7 +189,7 @@ sap.ui.define([
       var snmpGlobal = device.snmpGlobal;
 
       if (snmpGlobal) {
-        this.setProperty('/deviceName', snmpGlobal.snmpDeviceName);
+        this.setProperty('/deviceName', snmpGlobal.deviceName);
       }
 
       this.updateInterfaceList(oViewModel, device); 
@@ -215,23 +216,23 @@ sap.ui.define([
         var snmpGlobal = device.snmpGlobal;
 
         // deviceName
-        deviceName = snmpGlobal.snmpDeviceName;
+        deviceName = snmpGlobal.deviceName;
         basicInfos.push({
           name: oBundle.getText("deviceName"),
           value: deviceName
         });
 
         // device description
-        if (snmpGlobal.snmpSystemDescription) {
+        if (snmpGlobal.systemDescription) {
           basicInfos.push({
             name: oBundle.getText("description"),
-            value: snmpGlobal.snmpSystemDescription
+            value: snmpGlobal.systemDescription
           });
         }
 
         // device system up time
-        if (snmpGlobal.snmpSystemUpTime) {
-          var upTime = parseInt(snmpGlobal.snmpSystemUpTime);
+        if (snmpGlobal.systemUpTime) {
+          var upTime = parseInt(snmpGlobal.systemUpTime);
 
           if (!isNaN(upTime)) {
 
@@ -347,16 +348,6 @@ sap.ui.define([
         });
       }
 
-      var arpIf = ioLinkIF.arpInterface;
-
-      if (arpIf && arpIf.arpMacAddress) {
-        basicInfos.push({
-          name: oBundle.getText("macAddress"),
-          value: arpIf.arpMacAddress,
-          listType: inactiveLinkType
-        });
-      }
-
       var oData = {
         panelName: panelName,
         panelType: ifType,
@@ -389,8 +380,7 @@ sap.ui.define([
           item = portList[i];
           iolPort = item.iolPort;
 
-          //columnType = 'Inactive';
-          columnType = 'Navigation';
+          columnType = 'Navigation'; //Inactive
           iconSrc = 'sap-icon://disconnected';
           iconColor = "Negative";
           portNumber = 0;
@@ -398,22 +388,22 @@ sap.ui.define([
           iolVendorId = '';
 
           if (iolPort) {
-            if (item.neighbourList && item.neighbourList.length > 0) {
+            if (iolPort.sensorConnected) {
               columnType = "Navigation";
               iconSrc = "sap-icon://connected";
               iconColor = "Positive";
             }
 
-            if (iolPort.hasOwnProperty('iolPort')) {
-              portNumber = iolPort.iolPort;
+            if (iolPort.hasOwnProperty('portNumber')) {
+              portNumber = iolPort.portNumber;
             }
 
-            if (iolPort.hasOwnProperty('iolDeviceId')) {
-              iolDeviceId = iolPort.iolDeviceId;
+            if (iolPort.hasOwnProperty('deviceId')) {
+              iolDeviceId = iolPort.deviceId;
             }
 
-            if (iolPort.hasOwnProperty('iolVendorId')) {
-              iolVendorId = iolPort.iolVendorId;
+            if (iolPort.hasOwnProperty('vendorId')) {
+              iolVendorId = iolPort.vendorId;
             }
           }
 
@@ -458,10 +448,10 @@ sap.ui.define([
 
       var arpIf = profinetIF.arpInterface;
 
-      if (arpIf && arpIf.arpMacAddress) {
+      if (arpIf && arpIf.macAddress) {
         basicInfos.push({
           name: oBundle.getText("macAddress"),
-          value: arpIf.arpMacAddress,
+          value: arpIf.macAddress,
           listType: inactiveLinkType
         });
       }
@@ -509,30 +499,30 @@ sap.ui.define([
           outErrorFrames = '';
 
           if (snmpPort) {
-            if (snmpPort.snmpLinkStatus == "up") {
+            if (snmpPort.linkStatus == "up") {
               columnType = "Navigation";
               iconSrc = "sap-icon://connected";
               iconColor = "Positive";
             }
 
-            if (snmpPort.hasOwnProperty('snmpPortNumber')) {
-              portNumber = snmpPort.snmpPortNumber;
+            if (snmpPort.hasOwnProperty('portNumber')) {
+              portNumber = snmpPort.portNumber;
             }
 
-            if (snmpPort.hasOwnProperty('snmpInOctets')) {
-              inOctets = snmpPort.snmpInOctets;
+            if (snmpPort.hasOwnProperty('inOctets')) {
+              inOctets = snmpPort.inOctets;
             }
 
-            if (snmpPort.hasOwnProperty('snmpOutOctets')) {
-              outOctets = snmpPort.snmpOutOctets;
+            if (snmpPort.hasOwnProperty('outOctets')) {
+              outOctets = snmpPort.outOctets;
             }
 
-            if (snmpPort.hasOwnProperty('snmpInErrorFrames')) {
-              inErrorFrames = snmpPort.snmpInErrorFrames;
+            if (snmpPort.hasOwnProperty('inErrorFrames')) {
+              inErrorFrames = snmpPort.inErrorFrames;
             }
 
-            if (snmpPort.hasOwnProperty('snmpOutErrorFrames')) {
-              outErrorFrames = snmpPort.snmpOutErrorFrames;
+            if (snmpPort.hasOwnProperty('outErrorFrames')) {
+              outErrorFrames = snmpPort.outErrorFrames;
             }
           }
 
@@ -647,43 +637,57 @@ sap.ui.define([
       
       for (var i = 0; i < packageList.length; i++) {
 
-        var parameters = packageList[i].parameterList;
         var packageId = packageList[i].packageId;
+        var objList = packageList[i].parameterObjArray;
+        
+        if (!objList) {
+          continue;
+        }
 
-        for (var j = 0; j < parameters.length; j++) {
+        for (var j = 0; j < objList.length; j++) {
+          var parameters = objList[j].parameterList;
+          var uuid = objList[j].uuid;
 
-          item = parameters[j];
-
-          if (!item || !item.semanticInfo || !item.name) {
+          if (!parameters || !uuid) {
             continue;
           }
 
-          paramName = item.name.join(".");
+          for (var k = 0; k < parameters.length; k++) {
+            item = parameters[k];
 
-          // Do not show value
-          //paramValue = "";
-          //if (item.hasOwnProperty("value")) {
-          //  paramValue = this.convertValueToString(item.value);
+            if (!item || !item.semanticInfo || !item.name) {
+              continue;
+            }
 
-          //  if (item.hasOwnProperty("unit") &&
-          //     paramValue.length > 0 && paramValue != "...") {
-          //    paramUnit = item.unit;
-          //  }
-          //}
+            paramName = item.name.join(".");
 
-          paramList.push({
-            packageId: packageId,
-            parameter: item,
-            name: paramName,
-            //value: paramValue,
-            //unit: paramUnit,
-            index: i
-          });
+            // Do not show value
+            //paramValue = "";
+            //if (item.hasOwnProperty("value")) {
+            //  paramValue = this.convertValueToString(item.value);
+
+            //  if (item.hasOwnProperty("unit") &&
+            //     paramValue.length > 0 && paramValue != "...") {
+            //    paramUnit = item.unit;
+            //  }
+            //}
+
+            paramList.push({
+              packageId: packageId,
+              uuid: uuid,
+              parameter: item,
+              name: paramName
+              //value: paramValue,
+              //unit: paramUnit,
+              //index: i
+            });
+          }
         }
       }
+      
       if (paramList.length > 0) {
         oViewModel.setProperty("/visibleForParamPanel", true);
-      }      
+      }
 
       oViewModel.setProperty("/rawParameterPackageList", packageList);
       oViewModel.setProperty("/parameterList", paramList);
@@ -698,7 +702,10 @@ sap.ui.define([
     queryProcessDataList: function (device) {
       var that = this;
       var uuid = device.uuid;
-      var url = oAppDataModel.getRequestUrl("/device/processData/list") + '?deviceUuid=' + encodeURIComponent(uuid);
+      var url = oAppDataModel.getRequestUrl("/device/processData/list")
+                + '?uuid=' + encodeURIComponent(uuid)
+                + '&packageId=pn';
+
       var sessionToken = oAppDataModel.getSessionToken();
 
       jQuery.ajax({
@@ -710,6 +717,9 @@ sap.ui.define([
         },
         contentType: "application/json; charset=utf-8",
         success: function (data) {
+          //console.log("/device/processData/list");
+          //console.log(JSON.stringify(data));
+
           if (data && data.packageList) {
             that.updateProcessDataList(data.packageList);
           }
@@ -742,18 +752,33 @@ sap.ui.define([
       var item, itemName, itemValue;
 
       for (var i = 0; i < packageList.length; i++) {
-        var dataList = packageList[i].processDataList;
         var packageId = packageList[i].packageId;
+        var objectList = packageList[i].processDataObjArray;
 
-        for (var j = 0; j < dataList.length; j++) {
-          item = dataList[j];
-          list.push({
-            packageId: packageId,
-            processData: item,
-            name: item.name.join('.'),
-            dir: item.direction
-            //value: item.value
-          });
+        if (!objectList) {
+          continue;
+        }
+
+        for (var j = 0; j < objectList.length; j++) {
+
+          var ifUuid = objectList[j].uuid; // interface uuid, e.g. RPC interface
+          var dataList = objectList[j].processDataList;
+
+          if (!ifUuid || !dataList) {
+            continue;
+          }
+
+          for (var k = 0; k < dataList.length; k++) {
+            item = dataList[k];
+            list.push({
+              packageId: packageId,
+              ifUuid: ifUuid,
+              processData: item,
+              name: item.name.join('.'),
+              dir: item.direction
+              //value: item.value
+            });
+          }
         }
       }
 
@@ -886,6 +911,7 @@ sap.ui.define([
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
           that.showMessage(XMLHttpRequest, 'failedToGetDeviceList');
+          sap.ui.core.BusyIndicator.hide();
         }
       });
     },
@@ -927,7 +953,7 @@ sap.ui.define([
     queryDeviceInfo: function (deviceUuid) {
 
       var that = this;
-      var url = oAppDataModel.getRequestUrl("/device/info") + '?deviceUuid=' + encodeURIComponent(deviceUuid);
+      var url = oAppDataModel.getRequestUrl("/device/info") + '?uuid=' + encodeURIComponent(deviceUuid);
       var sessionToken = oAppDataModel.getSessionToken();
 
       jQuery.ajax({
@@ -962,9 +988,11 @@ sap.ui.define([
     queryParameterList: function(device) {
       var that = this;
       var uuid = device.uuid;
-      var url = oAppDataModel.getRequestUrl("/device/parameter/list") + '?deviceUuid=' + encodeURIComponent(uuid);
       var sessionToken = oAppDataModel.getSessionToken();
-    
+      var url = oAppDataModel.getRequestUrl("/device/parameter/list")
+                + '?uuid=' + encodeURIComponent(uuid)
+                + '&packageId=pn';
+
       jQuery.ajax({
         url : url,
         type : "GET",
@@ -973,7 +1001,10 @@ sap.ui.define([
           request.setRequestHeader('sessionToken', sessionToken);
         },
         contentType : "application/json; charset=utf-8",
-        success : function(data) {   
+        success: function (data) {
+          //console.log("/device/parameter/list");
+          //console.log(JSON.stringify(data));
+
           if (data && data.packageList) {
             that.updateParameterList(data.packageList);
           }
@@ -1110,8 +1141,11 @@ sap.ui.define([
 
       if (isLogged) {
 
+        sap.ui.core.BusyIndicator.show(0);
+
         var that = this;
         var OnSuccess = function (data) {
+          sap.ui.core.BusyIndicator.hide();
           that.ShowDeviceListDialog(data);
         }
 
@@ -1242,18 +1276,16 @@ sap.ui.define([
      * @public
      */
     onPressParamter: function(oEvent) {
-    
       var oContext = oEvent.getSource().getBindingContext();
       
       if(oContext) {
-        
         var oItem = oContext.getProperty(oContext.sPath); 
         var oViewModel = this.getView().getModel();
         
         if(oViewModel && oItem) {
          
           var params = {
-            deviceUuid: oViewModel.getProperty("/deviceUuid"),
+            uuid: oItem.uuid,
             packageId: oItem.packageId,
             parameter: oItem.parameter
           };
@@ -1304,6 +1336,7 @@ sap.ui.define([
 
           var params = {
             deviceUuid: oViewModel.getProperty("/deviceUuid"),
+            ifUuid: oItem.ifUuid,
             packageId: oItem.packageId,
             processData: oItem.processData
           };
@@ -1356,7 +1389,7 @@ sap.ui.define([
       oAppDataModel.setDeviceListResponse(data);
       var deviceListResponse = oAppDataModel.getDeviceListResponse();
 
-      var device, status;
+      var device, status, enabled;
       var deviceList = deviceListResponse.deviceList;
       var devices = [];
       var deviceName, ipAddresses, macAddress, ipList, iconInfo;
@@ -1364,16 +1397,25 @@ sap.ui.define([
       for (var i = 0; i < deviceList.length; i++) {
         device = deviceList[i];
 
-        if (device.hasOwnProperty('snmpGlobal')) {
-          deviceName = device.snmpGlobal.snmpDeviceName;
-        } else {
-          deviceName = '';
+        var protocol = getSupportedProtocol(device);
+
+        if (protocol !== BusProtocols.Ethernet &&
+            protocol !== BusProtocols.Profinet) {
+          continue; // Do not shown non-ethernet device
         }
 
         if (this.isInactiveDevice(device)) {
           status = EnumSeverity.None;
+          enabled = false;
         } else {
           status = deviceListResponse.getStatus(device.uuid);
+          enabled = true;
+        }
+
+        if (device.hasOwnProperty('snmpGlobal')) {
+          deviceName = device.snmpGlobal.deviceName;
+        } else {
+          deviceName = '';
         }
 
         var addresses = this.getIpAndMacAddress(device);
@@ -1384,6 +1426,7 @@ sap.ui.define([
         iconInfo = this.getIconInfo(status);
 
         var item = {
+          enabled: enabled,
           status: status,
           uuid: device.uuid,
           deviceName: deviceName,
@@ -1452,21 +1495,28 @@ sap.ui.define([
       var result = false;
 
       if (device && device.interfaceList) {
+        var devIF;
+        var inactiveInterfaceCount = 0;
         var list = device.interfaceList;
 
         for (var i = 0; i < list.length; i++) {
-          if (list[i].arpInterface) {
-            if (list[i].arpInterface.dontAnswered) { //arpDontAnswered
-              result = true;
-              break;
+          devIF = list[i];
+
+          if (devIF && devIF.hasOwnProperty('active')) {
+            if (!devIF.active) {
+              inactiveInterfaceCount++;
             }
           }
+        }
+
+        if (inactiveInterfaceCount > 0 &&
+          inactiveInterfaceCount === list.length) {
+          result = true;
         }
       }
 
       return result;
     }
-
 	});
 
 	return PageController;

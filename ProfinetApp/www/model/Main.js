@@ -27,10 +27,12 @@ var oBundle = jQuery.sap.resources({
   locale : sLocale
 });
 
+
 var BusProtocols = {
-  Unknown: '',
-  Profinet: 'Profinet',
-  IOLink: 'IOLink'
+  Ethernet: 'ethernet',
+  IOLink: 'iolink',
+  Profinet: 'profinet',
+  Unknown: 'unknown'
 }
 
 /**
@@ -352,7 +354,13 @@ function showLoginDialog(data, serverUrl) {
     beginButton: new m.Button(loginButtonId, {
       text: oBundle.getText('login'),
       enabled: enableLoginButton,
-      press: function () {       
+      press: function () {
+        var button = sap.ui.getCore().byId(loginButtonId);
+
+        if (button) {
+          button.setEnabled(false);
+        }
+
         var userName = inputUserName.getValue();
         var password = inputPassword.getValue();
 
@@ -534,3 +542,50 @@ function getNeighborInfo(portIndices, fromPortUuid, toPortUuid) {
     hasReferenceInNeightbor: hasReferenceInNeightbor
   };
 }
+
+/**
+ * Get the supported protocol for the specified device.
+ * @param {object} device The device object.
+ * @return {string} The name of supported protocol.
+ */
+function getSupportedProtocol(device) {
+  var protocol = BusProtocols.Unknown;
+
+  if (device && device.supportedProtocolList) {
+    var hasArp = false;
+    var hasRcp = false;
+    var hasSnmp = false;
+    var hasIolink = false;
+
+    var list = device.supportedProtocolList;
+
+    for (var i = 0; i < list.length; i++) {
+      var item = list[i];
+
+      if (item.enabled) {
+        if (item.protocol === 'arp') {
+          hasArp = true;
+        } else if (item.protocol === 'rpc') {
+          hasRcp = true;
+        } else if (item.protocol === 'snmp') {
+          hasSnmp = true;
+        } else if (item.protocol === 'iol') {
+          hasIolink = true;
+        }
+      }
+    }
+
+    if (hasArp && hasSnmp) {
+      if (hasRcp) {
+        protocol = BusProtocols.Profinet;
+      } else {
+        protocol = BusProtocols.Ethernet;
+      }
+    } else if (hasIolink) {
+      protocol = BusProtocols.IOLink;
+    }
+  }
+
+  return protocol;
+}
+

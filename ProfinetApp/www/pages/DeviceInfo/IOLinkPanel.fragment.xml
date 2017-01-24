@@ -14,6 +14,7 @@
     </headerToolbar>
     <content>
       <List items="{path: '/basicInfos'}"
+            showNoData="false"
             noDataText="{i18n>noData}">
         <DisplayListItem
             label="{name}"
@@ -44,7 +45,7 @@
         <items>
           <ColumnListItem
             press="onPressIoLinkPort"
-            type="Navigation">
+            type="{columnType}">
             <cells>
               <core:Icon
                 color="{iconColor}"

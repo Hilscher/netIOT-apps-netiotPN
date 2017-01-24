@@ -6,7 +6,7 @@
         class="customList"
         items="{path: '/deviceList'}"
         noDataText="{i18n>noServer}" >
-    <CustomListItem>
+    <CustomListItem enabled="{enabled}">
       <core:Icon
             color="{iconColor}"
             src="{iconSrc}"
