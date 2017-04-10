@@ -1,7 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<widget xmlns:cdv="http://cordova.apache.org/ns/1.0" xmlns:vs="http://schemas.microsoft.com/appx/2014/htmlapps" id="com.hilscher.netIOTPN" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" defaultlocale="en-US">
+<widget xmlns:cdv="http://cordova.apache.org/ns/1.0" xmlns:vs="http://schemas.microsoft.com/appx/2014/htmlapps" id="com.hilscher.netIOTPN" version="1.2.0" xmlns="http://www.w3.org/ns/widgets" defaultlocale="en-US">
   <name>netIOT PN</name>
-  <description>This App shows the information of a PROFINET device.</description>
+  <description>The netIOT PN app is used for direct access to individual PROFINET field-devices.
+It is used to read out field-device data, parameters and process values.
+
+The PROFINET app can be launched automatically by selecting a PROFINET device in the netIOT app, or conventionally by selecting the netIOT PN app icon on the home screen of your iOS device.
+
+Note: Using this app requires access to a netIOT Edge Gateway device.</description>
   <author href="http://cordova.io" email="dev@cordova.apache.org">Hilscher Gesellschaft fuer Systemautomation mbH</author>
   <content src="index.html" />
   <access origin="*" />
@@ -46,6 +51,7 @@
     <!-- iPad -->
     <icon src="res/icons/ios/icon-76.png" width="76" height="76" />
     <icon src="res/icons/ios/icon-76-2x.png" width="152" height="152" />
+    <icon src="res/icons/ios/icon-83.5-2x.png" width="167" height="167" />
     <!-- iOS 6.1 -->
     <!-- Spotlight Icon -->
     <icon src="res/icons/ios/icon-40.png" width="40" height="40" />
@@ -59,6 +65,7 @@
     <!-- iPhone Spotlight and Settings Icon -->
     <icon src="res/icons/ios/icon-small.png" width="29" height="29" />
     <icon src="res/icons/ios/icon-small-2x.png" width="58" height="58" />
+    <icon src="res/icons/ios/icon-small-3x.png" width="87" height="87" />
     <!-- iPad Spotlight and Settings Icon -->
     <icon src="res/icons/ios/icon-50.png" width="50" height="50" />
     <icon src="res/icons/ios/icon-50-2x.png" width="100" height="100" />

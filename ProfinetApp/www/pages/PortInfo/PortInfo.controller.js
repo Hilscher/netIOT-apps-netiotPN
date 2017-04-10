@@ -38,12 +38,12 @@ sap.ui.define([
      *       
      * @public
      */
-    initViewModel : function() {		  
+    initViewModel : function() {
 	    
       var oData = {
 	        deviceUuid: "",
 	        portUuid: "",
-	        portId: "",
+	        portName: "",
 	        neighbourDeviceUuid: "",
 	        neighbourPortUuid: "",
           basicInfos : [],
@@ -292,13 +292,15 @@ sap.ui.define([
         return;
       }
 
-      var portId = "";
+      var portName = "";
       var inactiveLinkType = "Inactive";
       var basicInfos = [];
+      var temp;
 
       var snmpPort = port.snmpPort;
 
       if (snmpPort) {
+
         // PortNumber
         if (snmpPort.hasOwnProperty("portNumber")) {
           basicInfos.push({
@@ -308,9 +310,9 @@ sap.ui.define([
           });
         }
 
-        // PortId
+        // portName
         if (snmpPort.hasOwnProperty("portName")) {
-          portId = snmpPort.portId;
+          portName = snmpPort.portName;
 
           basicInfos.push({
             name: oBundle.getText("portName"),
@@ -318,6 +320,19 @@ sap.ui.define([
             listType: inactiveLinkType
           });
         }
+
+        // macAddress
+        if (snmpPort.hasOwnProperty("macAddress")) {
+
+          basicInfos.push({
+            name: oBundle.getText("macAddress"),
+            value: snmpPort.macAddress,
+            listType: inactiveLinkType
+          });
+        }
+
+        
+
 
         // LinkStatus
         if (snmpPort.hasOwnProperty("linkStatus")) {
@@ -428,6 +443,32 @@ sap.ui.define([
             listType: inactiveLinkType
           });
         }
+        
+        // inLoadInPercent
+        if (snmpPort.hasOwnProperty("inLoadInPercent")) {
+          temp = snmpPort.inLoadInPercent;
+
+          if (temp !== null || temp !== undefined) {
+            basicInfos.push({
+              name: oBundle.getText("inLoadInPercent"),
+              value: temp.toString() + '%',
+              listType: inactiveLinkType
+            });
+          }
+        }
+
+        // outLoadInPercent
+        if (snmpPort.hasOwnProperty("outLoadInPercent")) {
+          temp = snmpPort.outLoadInPercent;
+
+          if (temp !== null || temp !== undefined) {
+            basicInfos.push({
+              name: oBundle.getText("outLoadInPercent"),
+              value: temp.toString() + '%',
+              listType: inactiveLinkType
+            });
+          }
+        }
       }
 
       var iolPort = port.iolPort;
@@ -506,7 +547,7 @@ sap.ui.define([
         }
       }
 
-      oViewModel.setProperty("/portId", portId);
+      oViewModel.setProperty("/portName", portName);
       oViewModel.setProperty("/basicInfos", basicInfos);
     },
 

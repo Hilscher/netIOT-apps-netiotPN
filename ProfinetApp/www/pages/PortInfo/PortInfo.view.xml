@@ -17,7 +17,7 @@
     
       <Toolbar  class="sapUiResponsiveMargin noBorderBottom">
         <ToolbarSpacer/>
-        <Title text="{/portId}" class="titleText"/>
+        <Title text="{/portName}" class="titleText"/>
         <ToolbarSpacer/>
       </Toolbar>
           
